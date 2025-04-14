@@ -78,7 +78,7 @@
 
 @layer components {
   .wheel-segment {
-    @apply absolute top-0 left-0 w-full h-full transform-origin-center opacity-90;
+    @apply absolute top-0 left-0 w-full h-full origin-center opacity-90;
     clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 50%);
   }
   
