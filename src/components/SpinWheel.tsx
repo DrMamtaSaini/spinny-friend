@@ -40,33 +40,30 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       // Get normalized rotation between 0-359 degrees
       const normalizedRotation = newRotation % 360;
       
-      // FIX: The key insight is that we need to see which entry is at the TOP
-      // when the wheel stops spinning. Since the wheel spins clockwise,
-      // we need to calculate which segment is at the top position (0 degrees).
+      // Calculate which segment is at the top indicator (pointer)
+      // When the wheel stops, we need to find which segment is at the top (0 degrees)
       
-      // When the wheel rotates clockwise by X degrees, we're looking at the segment
-      // that was X degrees counterclockwise from the top before the spin.
-      // However, we need to adjust for the fact that our segments are visually
-      // mirrored from the calculation logic.
-
-      // Calculate which segment is at the top (opposite to the rotation)
-      const topSegmentAngle = (360 - normalizedRotation) % 360;
+      // IMPORTANT FIX: The key insight is that the wheel rotates clockwise,
+      // so we need to find which segment is at the top position after rotation
       
-      // Find the segment index - which segment contains this angle
-      const winningSegmentIndex = Math.floor(topSegmentAngle / segmentAngle);
+      // Since we're rotating clockwise, we can determine the segment
+      // by calculating how many segments have passed the top indicator
       
-      // The visual orientation of the numbers on the wheel might be different
-      // from what we calculate. Based on the image, we need to adjust the index.
-      // This is the critical fix - we need to ensure the calculated winner
-      // matches what is visually at the top pointer position
+      // First, convert the rotation to segment index (how many segments have passed)
+      const segmentsPassed = Math.floor(normalizedRotation / segmentAngle);
       
-      // This results in the winner being the entry at the calculated index
+      // Then calculate which segment is now at the top (index in entries array)
+      // We need to go counterclockwise from the starting position (entry[0] at top)
+      // The formula is: (total segments - segments passed) % total segments
+      const winningSegmentIndex = (entries.length - segmentsPassed) % entries.length;
+      
+      // Get the actual winner from entries array
       const actualWinner = entries[winningSegmentIndex];
       
       console.log({
         normalizedRotation,
-        topSegmentAngle,
         segmentAngle,
+        segmentsPassed,
         winningSegmentIndex,
         actualWinner,
         entriesLength: entries.length,
@@ -89,6 +86,38 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     }, 5000); // Match this with the CSS animation duration
   };
   
+  // Render wheel segments and labels
+  const renderWheelSegments = () => {
+    if (entries.length === 0) {
+      return (
+        <div className="flex items-center justify-center w-full h-full">
+          <p className="text-muted-foreground text-center p-4">
+            Add items to the wheel to begin
+          </p>
+        </div>
+      );
+    }
+    
+    return entries.map((entry, index) => {
+      const segmentAngle = 360 / entries.length;
+      const rotation = index * segmentAngle;
+      const color = getSegmentColor(index);
+      
+      return (
+        <div 
+          key={index}
+          className="absolute w-full h-full"
+          style={{ 
+            clipPath: `polygon(50% 50%, ${50 + 50 * Math.cos(rotation * Math.PI / 180)}% ${50 + 50 * Math.sin(rotation * Math.PI / 180)}%, ${50 + 50 * Math.cos((rotation + segmentAngle) * Math.PI / 180)}% ${50 + 50 * Math.sin((rotation + segmentAngle) * Math.PI / 180)}%)`,
+            backgroundColor: color,
+          }}
+        >
+          {renderSegmentLabel(entry, index, entries.length)}
+        </div>
+      );
+    });
+  };
+  
   // Add a function to correctly render the numbers on the wheel
   // This ensures visual alignment with the winner calculation
   const renderSegmentLabel = (entry: string, index: number, totalEntries: number) => {
@@ -106,12 +135,18 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       <div 
         className="wheel-segment-label"
         style={{ 
+          position: 'absolute',
           top: `${labelY}%`,
           left: `${labelX}%`,
           transform: `translate(-50%, -50%) rotate(${labelAngle + 90}deg)`,
+          fontSize: totalEntries > 20 ? '12px' : '16px',
+          fontWeight: 'bold',
+          color: 'white',
+          textShadow: '1px 1px 2px rgba(0,0,0,0.7)',
+          zIndex: 5,
         }}
       >
-        <span className="wheel-number">{entry}</span>
+        <span>{entry}</span>
       </div>
     );
   };
@@ -161,32 +196,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
               transition: 'transform 0.3s ease',
             }}
           >
-            {entries.length > 0 && entries.map((entry, index) => {
-              const segmentAngle = 360 / entries.length;
-              const rotation = index * segmentAngle;
-              const color = getSegmentColor(index);
-              
-              return (
-                <div 
-                  key={index}
-                  className="absolute w-full h-full"
-                  style={{ 
-                    clipPath: `polygon(50% 50%, ${50 + 50 * Math.cos(rotation * Math.PI / 180)}% ${50 + 50 * Math.sin(rotation * Math.PI / 180)}%, ${50 + 50 * Math.cos((rotation + segmentAngle) * Math.PI / 180)}% ${50 + 50 * Math.sin((rotation + segmentAngle) * Math.PI / 180)}%)`,
-                    backgroundColor: color,
-                  }}
-                >
-                  {renderSegmentLabel(entry, index, entries.length)}
-                </div>
-              );
-            })}
-
-            {entries.length === 0 && (
-              <div className="flex items-center justify-center w-full h-full">
-                <p className="text-muted-foreground text-center p-4">
-                  Add items to the wheel to begin
-                </p>
-              </div>
-            )}
+            {renderWheelSegments()}
             
             {/* Center SPIN button */}
             <div 
