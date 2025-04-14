@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -63,7 +64,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     // Create confetti pieces with more vibrant colors
     const colors = ['#ea384c', '#66bb6a', '#1EAEDB', '#8B5CF6', '#F97316', '#D946EF', '#FFEB3B', '#00BCD4'];
     
-    for (let i = 0; i < 100; i++) { // Increased number of confetti pieces
+    for (let i = 0; i < 150; i++) { // Increased number of confetti pieces
       const confetti = document.createElement('div');
       confetti.className = 'confetti animate-confetti-fall';
       confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
@@ -88,7 +89,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-8 border-white shadow-xl mb-8">
         {/* Center Circle */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-purple-600 rounded-full z-10 border-4 border-white shadow-md flex items-center justify-center">
-          <span className="text-white font-bold text-sm">
+          <span className="text-white font-bold text-lg">
             {isSpinning ? "..." : "SPIN"}
           </span>
         </div>
@@ -100,6 +101,9 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
           style={{ 
             transform: `rotate(${rotation}deg)`,
             transition: 'transform 0.3s ease',
+            boxShadow: '0 0 30px rgba(0,0,0,0.2)',
+            borderRadius: '50%',
+            background: 'white',
           }}
         >
           {entries.length > 0 && entries.map((entry, index) => {
@@ -107,19 +111,30 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
             const rotation = index * segmentAngle;
             const color = getSegmentColor(index);
             
+            // Calculate position for number labels - position farther from center
+            const labelDistance = 78; // percentage from center
+            const labelAngle = rotation + segmentAngle / 2;
+            const labelRadians = (labelAngle * Math.PI) / 180;
+            const labelX = 50 + labelDistance * Math.cos(labelRadians);
+            const labelY = 50 + labelDistance * Math.sin(labelRadians);
+            
             return (
               <div 
                 key={index}
                 className="wheel-segment"
                 style={{ 
                   transform: `rotate(${rotation}deg)`,
-                  backgroundColor: color
+                  backgroundColor: color,
+                  borderRight: '1px solid rgba(255,255,255,0.3)',
+                  borderTop: '1px solid rgba(255,255,255,0.3)'
                 }}>
                 <div 
                   className="wheel-segment-label"
                   style={{ 
-                    transform: `rotate(${segmentAngle / 2}deg) translateY(-150%) rotate(-${rotation + segmentAngle / 2}deg)`,
-                    left: '50%',
+                    position: 'absolute',
+                    top: `${labelY}%`,
+                    left: `${labelX}%`,
+                    transform: `translate(-50%, -50%) rotate(${90 + labelAngle}deg)`,
                   }}>
                   <span className="wheel-number">{entry}</span>
                 </div>
@@ -137,7 +152,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
         </div>
         
         {/* Pointer */}
-        <div className="wheel-pointer bg-black"></div>
+        <div className="wheel-pointer"></div>
       </div>
       
       <Button 
