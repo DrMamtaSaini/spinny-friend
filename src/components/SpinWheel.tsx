@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useToast } from "@/components/ui/use-toast";
 import { getSegmentColor } from "@/utils/wheelUtils";
+import { Sparkles } from "lucide-react";
 
 interface SpinWheelProps {
   entries: string[];
@@ -60,10 +61,10 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     
     container.innerHTML = '';
     
-    // Create confetti pieces
-    const colors = ['#ea384c', '#66bb6a', '#1EAEDB', '#8B5CF6', '#F97316', '#D946EF'];
+    // Create confetti pieces with more vibrant colors
+    const colors = ['#ea384c', '#66bb6a', '#1EAEDB', '#8B5CF6', '#F97316', '#D946EF', '#FFEB3B', '#00BCD4'];
     
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 100; i++) { // Increased number of confetti pieces
       const confetti = document.createElement('div');
       confetti.className = 'confetti animate-confetti-fall';
       confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
@@ -85,14 +86,18 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     <div className="relative flex flex-col items-center">
       <div id="confetti-container" className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden" />
       
-      <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-gray-300 shadow-lg mb-8">
+      <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-8 border-white shadow-xl mb-8">
         {/* Center Circle */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full z-10 border-2 border-gray-400"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-purple-600 rounded-full z-10 border-4 border-white shadow-md flex items-center justify-center">
+          <span className="text-white font-bold text-sm">
+            {isSpinning ? "..." : "SPIN"}
+          </span>
+        </div>
         
         {/* Wheel */}
         <div 
           ref={wheelRef}
-          className="w-full h-full relative transform"
+          className={`w-full h-full relative transform ${isSpinning ? 'animate-spin-wheel' : ''}`}
           style={{ 
             transform: `rotate(${rotation}deg)`,
             transition: 'transform 0.3s ease',
@@ -116,9 +121,8 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
                   style={{
                     transform: `rotate(${segmentAngle / 2}deg) translateY(-150%) rotate(-${rotation + segmentAngle / 2}deg)`,
                     left: '50%',
-                    fontSize: entries.length > 20 ? '0.65rem' : entries.length > 10 ? '0.8rem' : '1rem',
                   }}>
-                  <span className="max-w-16 truncate">{entry}</span>
+                  <span className="wheel-number">{entry}</span>
                 </div>
               </div>
             );
@@ -140,14 +144,19 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       <Button 
         disabled={isSpinning || entries.length === 0}
         onClick={spinWheel}
-        className="w-32 transition-all hover:scale-105"
+        className="w-32 transition-all hover:scale-105 bg-purple-600 hover:bg-purple-700 text-white font-bold"
         size="lg"
       >
-        {isSpinning ? "Spinning..." : "SPIN"}
+        {isSpinning ? "Spinning..." : (
+          <span className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4" />
+            SPIN
+          </span>
+        )}
       </Button>
       
       {winner && !isSpinning && (
-        <div className="mt-4 bg-primary text-primary-foreground p-3 rounded-md shadow-md animate-fade-in">
+        <div className="mt-4 bg-purple-600 text-white p-3 px-6 rounded-full shadow-lg animate-fade-in">
           <p className="text-lg font-bold">Winner: {winner}</p>
         </div>
       )}

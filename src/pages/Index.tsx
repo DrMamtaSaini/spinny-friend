@@ -16,8 +16,8 @@ const Index: React.FC = () => {
   return (
     <MainLayout>
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-3">
-          Spin to Win!
+        <h1 className="text-5xl font-extrabold tracking-tight lg:text-6xl mb-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
+          Spinny Saga
         </h1>
         <p className="text-lg text-muted-foreground">
           Customize your wheel and spin for a random winner.

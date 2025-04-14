@@ -78,12 +78,30 @@
 
 @layer components {
   .wheel-segment {
-    @apply absolute top-0 left-0 w-full h-full origin-center opacity-90;
+    @apply absolute top-0 left-0 w-full h-full origin-center opacity-95;
     clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 50%);
+    transition: transform 0.2s ease;
+  }
+  
+  .wheel-segment:hover {
+    @apply opacity-100;
+    filter: brightness(1.1);
   }
   
   .wheel-segment-label {
     @apply absolute flex items-center justify-center text-white font-bold transform;
+  }
+  
+  .wheel-number {
+    @apply px-1 py-0.5 rounded-full bg-white bg-opacity-30 text-white text-xs md:text-sm font-bold min-w-6 text-center;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
+    transform: scale(0.9);
+    transition: transform 0.2s ease;
+  }
+  
+  .wheel-segment:hover .wheel-number {
+    transform: scale(1.1);
   }
   
   .wheel-pointer {

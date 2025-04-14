@@ -1,5 +1,5 @@
 
-// Array of colors to be used for wheel segments
+// Array of colors to be used for wheel segments - enhanced color palette
 const SEGMENT_COLORS = [
   '#ea384c', // red
   '#000000e6', // black
@@ -8,6 +8,13 @@ const SEGMENT_COLORS = [
   '#8B5CF6', // purple
   '#F97316', // orange
   '#D946EF', // pink
+  '#FFEB3B', // yellow
+  '#00BCD4', // cyan
+  '#9C27B0', // deep purple
+  '#FF9800', // dark orange
+  '#3F51B5', // indigo
+  '#607D8B', // blue grey
+  '#E91E63', // pink
 ];
 
 /**
