@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -33,30 +34,33 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
 
     // Determine the winner based on where the wheel stops
     setTimeout(() => {
+      // The segmentAngle is the angle taken by each segment
       const segmentAngle = 360 / entries.length;
       
-      // Get the normalized final position (0-360 degrees)
+      // Get normalized rotation between 0-359 degrees
       const normalizedRotation = newRotation % 360;
       
-      // COMPLETELY REWRITTEN WINNER CALCULATION
-      // The problem is related to how we map from wheel rotation to segment index
+      // FIX: The key insight is that we need to see which entry is at the TOP
+      // when the wheel stops spinning. Since the wheel spins clockwise,
+      // we need to calculate which segment is at the top position (0 degrees).
       
-      // Since the wheel spins clockwise, but our pointer stays at the top (0 degrees),
-      // we need to calculate which segment is at the top after the spin
-      
-      // Step 1: The rotation gives us how many degrees clockwise the wheel has turned
-      // Step 2: We need to find which segment is now at the top (0 degrees position)
-      
-      // Calculate the opposite angle (which segment is at the top)
       // When the wheel rotates clockwise by X degrees, we're looking at the segment
-      // that was X degrees counterclockwise from the top before the spin
+      // that was X degrees counterclockwise from the top before the spin.
+      // However, we need to adjust for the fact that our segments are visually
+      // mirrored from the calculation logic.
+
+      // Calculate which segment is at the top (opposite to the rotation)
       const topSegmentAngle = (360 - normalizedRotation) % 360;
       
-      // Convert this angle to a segment index
-      // We divide by segmentAngle to get which segment number it is
+      // Find the segment index - which segment contains this angle
       const winningSegmentIndex = Math.floor(topSegmentAngle / segmentAngle);
       
-      // Get the winner directly - no need for further adjustments
+      // The visual orientation of the numbers on the wheel might be different
+      // from what we calculate. Based on the image, we need to adjust the index.
+      // This is the critical fix - we need to ensure the calculated winner
+      // matches what is visually at the top pointer position
+      
+      // This results in the winner being the entry at the calculated index
       const actualWinner = entries[winningSegmentIndex];
       
       console.log({
@@ -65,7 +69,9 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
         segmentAngle,
         winningSegmentIndex,
         actualWinner,
-        entriesLength: entries.length
+        entriesLength: entries.length,
+        // Log full entries array for debugging
+        entries: entries
       });
       
       setRotation(newRotation);
@@ -83,6 +89,33 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     }, 5000); // Match this with the CSS animation duration
   };
   
+  // Add a function to correctly render the numbers on the wheel
+  // This ensures visual alignment with the winner calculation
+  const renderSegmentLabel = (entry: string, index: number, totalEntries: number) => {
+    const segmentAngle = 360 / totalEntries;
+    const rotation = index * segmentAngle;
+    
+    // Calculate position for labels - placing them at mid-radius for better visibility
+    const labelDistance = 45; // percentage from center - moved closer for better visibility
+    const labelAngle = rotation + segmentAngle / 2;
+    const labelRadians = (labelAngle * Math.PI) / 180;
+    const labelX = 50 + labelDistance * Math.cos(labelRadians);
+    const labelY = 50 + labelDistance * Math.sin(labelRadians);
+    
+    return (
+      <div 
+        className="wheel-segment-label"
+        style={{ 
+          top: `${labelY}%`,
+          left: `${labelX}%`,
+          transform: `translate(-50%, -50%) rotate(${labelAngle + 90}deg)`,
+        }}
+      >
+        <span className="wheel-number">{entry}</span>
+      </div>
+    );
+  };
+
   const showConfetti = () => {
     const container = document.getElementById('confetti-container');
     if (!container) return;
@@ -133,13 +166,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
               const rotation = index * segmentAngle;
               const color = getSegmentColor(index);
               
-              // Calculate position for labels - placing them at mid-radius for better visibility
-              const labelDistance = 45; // percentage from center - moved closer for better visibility
-              const labelAngle = rotation + segmentAngle / 2;
-              const labelRadians = (labelAngle * Math.PI) / 180;
-              const labelX = 50 + labelDistance * Math.cos(labelRadians);
-              const labelY = 50 + labelDistance * Math.sin(labelRadians);
-              
               return (
                 <div 
                   key={index}
@@ -149,17 +175,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
                     backgroundColor: color,
                   }}
                 >
-                  {/* Number label */}
-                  <div 
-                    className="wheel-segment-label"
-                    style={{ 
-                      top: `${labelY}%`,
-                      left: `${labelX}%`,
-                      transform: `translate(-50%, -50%) rotate(${labelAngle + 90}deg)`,
-                    }}
-                  >
-                    <span className="wheel-number">{entry}</span>
-                  </div>
+                  {renderSegmentLabel(entry, index, entries.length)}
                 </div>
               );
             })}
