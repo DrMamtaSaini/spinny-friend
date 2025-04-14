@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -39,36 +38,34 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       // Get the normalized final position (0-360 degrees)
       const normalizedRotation = newRotation % 360;
       
-      // Calculate the winner based on the final position
-      // The pointer is at the top (0 degrees)
-      // When the wheel rotates clockwise, we need to determine 
-      // which segment is at the top position (pointer)
+      // COMPLETELY REWRITTEN WINNER CALCULATION
+      // The problem is related to how we map from wheel rotation to segment index
       
-      // This is the critical fix:
-      // Since the wheel rotates clockwise, we need to match the segments correctly
-      // The segment index is directly determined by how far the wheel has rotated
-      const winningSegmentIndex = Math.floor(normalizedRotation / segmentAngle);
+      // Since the wheel spins clockwise, but our pointer stays at the top (0 degrees),
+      // we need to calculate which segment is at the top after the spin
       
-      // Map this to the correct entry
-      // We need to adjust the index because the wheel rotation is clockwise
-      // but the segments are numbered in clockwise order as well
-      const adjustedIndex = entries.length - 1 - winningSegmentIndex;
+      // Step 1: The rotation gives us how many degrees clockwise the wheel has turned
+      // Step 2: We need to find which segment is now at the top (0 degrees position)
       
-      // Ensure the index wraps around properly
-      const finalIndex = (adjustedIndex + entries.length) % entries.length;
+      // Calculate the opposite angle (which segment is at the top)
+      // When the wheel rotates clockwise by X degrees, we're looking at the segment
+      // that was X degrees counterclockwise from the top before the spin
+      const topSegmentAngle = (360 - normalizedRotation) % 360;
       
-      // Get the winner from the entries array
-      const actualWinner = entries[finalIndex];
+      // Convert this angle to a segment index
+      // We divide by segmentAngle to get which segment number it is
+      const winningSegmentIndex = Math.floor(topSegmentAngle / segmentAngle);
+      
+      // Get the winner directly - no need for further adjustments
+      const actualWinner = entries[winningSegmentIndex];
       
       console.log({
         normalizedRotation,
+        topSegmentAngle,
         segmentAngle,
         winningSegmentIndex,
-        adjustedIndex,
-        finalIndex,
         actualWinner,
-        entriesLength: entries.length,
-        entriesArray: entries
+        entriesLength: entries.length
       });
       
       setRotation(newRotation);
