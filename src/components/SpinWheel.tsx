@@ -104,8 +104,8 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
               const rotation = index * segmentAngle;
               const color = getSegmentColor(index);
               
-              // Calculate position for labels - placing them along the radius
-              const labelDistance = entries.length > 20 ? 75 : 65; // percentage from center
+              // Calculate position for labels - placing them at mid-radius for better visibility
+              const labelDistance = 45; // percentage from center - moved closer for better visibility
               const labelAngle = rotation + segmentAngle / 2;
               const labelRadians = (labelAngle * Math.PI) / 180;
               const labelX = 50 + labelDistance * Math.cos(labelRadians);
@@ -146,10 +146,10 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
             {/* Center SPIN button */}
             <div 
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10
-                        w-20 h-20 rounded-full bg-purple-600 flex items-center justify-center"
+                        w-24 h-24 rounded-full bg-purple-600 flex items-center justify-center cursor-pointer"
               onClick={spinWheel}
             >
-              <span className="text-white font-bold text-xl">SPIN</span>
+              <span className="text-white font-bold text-2xl">SPIN</span>
             </div>
           </div>
           
