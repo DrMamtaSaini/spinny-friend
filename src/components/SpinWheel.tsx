@@ -35,14 +35,16 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     // Determine the winner based on where the wheel stops
     setTimeout(() => {
       const segmentAngle = 360 / entries.length;
-      const normalizedRotation = spinAngle % 360;
       
-      // Fix: The wheel rotates clockwise, and our pointer is at top (0 degrees)
-      // We need to find which segment is at the top position when the wheel stops
-      // Since segments are arranged counterclockwise, we need to use 360 - normalizedRotation
-      // and account for the fact that the wheel rotation is clockwise
-      const winnerIndex = Math.floor((360 - normalizedRotation) / segmentAngle) % entries.length;
-      const actualWinner = entries[winnerIndex];
+      // Calculate which segment is at the pointer position (top of wheel)
+      // We're rotating the wheel clockwise, and segments are arranged clockwise
+      // The final rotation value will be newRotation % 360
+      const finalRotationDegrees = newRotation % 360;
+      
+      // Get the segment index at pointer position 
+      // The opposite side of where the wheel stopped is what's showing at the top
+      const segmentIndex = Math.floor((360 - finalRotationDegrees) / segmentAngle);
+      const actualWinner = entries[segmentIndex % entries.length];
       
       setRotation(newRotation);
       setWinner(actualWinner);
