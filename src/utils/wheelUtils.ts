@@ -1,20 +1,19 @@
-
-// Array of colors to be used for wheel segments - enhanced color palette with brighter colors
+// Array of colors to be used for wheel segments - using bright colors from the reference image
 const SEGMENT_COLORS = [
-  '#FF1493', // deep pink
-  '#FF4500', // orange red
-  '#32CD32', // lime green
-  '#1E90FF', // dodger blue
-  '#9400D3', // dark violet
-  '#FFD700', // gold
-  '#FF6347', // tomato
-  '#00CED1', // dark turquoise
-  '#FF69B4', // hot pink
-  '#7B68EE', // medium slate blue
-  '#FFA500', // orange
-  '#00BFFF', // deep sky blue
-  '#FF00FF', // magenta
-  '#00FF7F', // spring green
+  '#8B5CF6', // purple
+  '#FFEB3B', // yellow
+  '#FF4081', // pink
+  '#00BCD4', // cyan
+  '#FF9800', // orange
+  '#4CAF50', // green
+  '#2196F3', // blue
+  '#E91E63', // deep pink
+  '#CDDC39', // lime
+  '#9C27B0', // deep purple
+  '#FF5722', // deep orange
+  '#03A9F4', // light blue
+  '#8BC34A', // light green
+  '#FFC107', // amber
 ];
 
 /**
