@@ -1,19 +1,21 @@
-// Array of colors to be used for wheel segments - using bright colors from the reference image
+
+// Array of colors to be used for wheel segments - matching exactly the reference image colors
 const SEGMENT_COLORS = [
   '#8B5CF6', // purple
   '#FFEB3B', // yellow
+  '#9C27B0', // deep purple
   '#FF4081', // pink
-  '#00BCD4', // cyan
   '#FF9800', // orange
+  '#00BCD4', // cyan
   '#4CAF50', // green
   '#2196F3', // blue
   '#E91E63', // deep pink
   '#CDDC39', // lime
   '#9C27B0', // deep purple
-  '#FF5722', // deep orange
   '#03A9F4', // light blue
   '#8BC34A', // light green
   '#FFC107', // amber
+  '#FF5722', // deep orange
 ];
 
 /**

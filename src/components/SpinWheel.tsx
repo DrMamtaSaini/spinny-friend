@@ -84,21 +84,19 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     <div className="relative flex flex-col items-center">
       <div id="confetti-container" className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden" />
       
-      <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-xl mb-8">
-        {/* Wheel Container with White Border */}
+      {/* Wheel Container with thick white border */}
+      <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
         <div 
-          className="w-full h-full rounded-full border-8 border-white relative bg-white shadow-lg"
-          style={{ boxShadow: '0 0 20px rgba(0,0,0,0.2)' }}
+          className="w-full h-full rounded-full border-[12px] border-white relative bg-white shadow-xl"
+          style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.2)' }}
         >
           {/* Wheel */}
           <div 
             ref={wheelRef}
-            className={`w-full h-full relative ${isSpinning ? 'animate-spin-wheel' : ''}`}
+            className={`w-full h-full relative rounded-full overflow-hidden ${isSpinning ? 'animate-spin-wheel' : ''}`}
             style={{ 
               transform: `rotate(${rotation}deg)`,
               transition: 'transform 0.3s ease',
-              borderRadius: '50%',
-              overflow: 'hidden',
             }}
           >
             {entries.length > 0 && entries.map((entry, index) => {
@@ -106,28 +104,29 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
               const rotation = index * segmentAngle;
               const color = getSegmentColor(index);
               
-              // Calculate position for labels - placing them in the middle of the segment but closer to the edge
-              const labelDistance = 35; // percentage from center to edge
+              // Calculate position for labels - placing them along the radius
+              const labelDistance = entries.length > 20 ? 75 : 65; // percentage from center
               const labelAngle = rotation + segmentAngle / 2;
-              const labelRadians = ((labelAngle - 90) * Math.PI) / 180; // Subtract 90 to start from the top
+              const labelRadians = (labelAngle * Math.PI) / 180;
               const labelX = 50 + labelDistance * Math.cos(labelRadians);
               const labelY = 50 + labelDistance * Math.sin(labelRadians);
               
               return (
                 <div 
                   key={index}
-                  className="absolute top-0 left-0 w-full h-full"
+                  className="absolute w-full h-full"
                   style={{ 
-                    clipPath: `path('M ${50}% ${50}% L ${50 + 50 * Math.cos((rotation - 90) * Math.PI / 180)}% ${50 + 50 * Math.sin((rotation - 90) * Math.PI / 180)}% A 50% 50% 0 0 1 ${50 + 50 * Math.cos((rotation + segmentAngle - 90) * Math.PI / 180)}% ${50 + 50 * Math.sin((rotation + segmentAngle - 90) * Math.PI / 180)}% Z')`,
+                    clipPath: `polygon(50% 50%, ${50 + 50 * Math.cos(rotation * Math.PI / 180)}% ${50 + 50 * Math.sin(rotation * Math.PI / 180)}%, ${50 + 50 * Math.cos((rotation + segmentAngle) * Math.PI / 180)}% ${50 + 50 * Math.sin((rotation + segmentAngle) * Math.PI / 180)}%)`,
                     backgroundColor: color,
                   }}
                 >
+                  {/* Number label */}
                   <div 
                     className="wheel-segment-label"
                     style={{ 
                       top: `${labelY}%`,
                       left: `${labelX}%`,
-                      transform: `translate(-50%, -50%) rotate(${labelAngle}deg)`,
+                      transform: `translate(-50%, -50%) rotate(${labelAngle + 90}deg)`,
                     }}
                   >
                     <span className="wheel-number">{entry}</span>
@@ -143,19 +142,23 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
                 </p>
               </div>
             )}
-          </div>
-          
-          {/* Center SPIN button */}
-          <div className="spin-button" onClick={spinWheel}>
-            SPIN
+            
+            {/* Center SPIN button */}
+            <div 
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10
+                        w-20 h-20 rounded-full bg-purple-600 flex items-center justify-center"
+              onClick={spinWheel}
+            >
+              <span className="text-white font-bold text-xl">SPIN</span>
+            </div>
           </div>
           
           {/* Triangle Pointer */}
           <div 
             className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
             style={{
-              width: '20px',
-              height: '20px',
+              width: '24px',
+              height: '24px',
               backgroundColor: 'black',
               clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
             }}
@@ -166,7 +169,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       <Button 
         disabled={isSpinning || entries.length === 0}
         onClick={spinWheel}
-        className="w-32 transition-all hover:scale-105 bg-purple-600 hover:bg-purple-700 text-white font-bold"
+        className="w-32 mt-6 transition-all hover:scale-105 bg-purple-600 hover:bg-purple-700 text-white font-bold"
         size="lg"
       >
         {isSpinning ? "Spinning..." : "SPIN"}
