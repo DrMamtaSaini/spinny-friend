@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -118,14 +117,9 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
                 }}>
                 <div 
                   className="wheel-segment-label"
-                  style={{
+                  style={{ 
                     transform: `rotate(${segmentAngle / 2}deg) translateY(-150%) rotate(-${rotation + segmentAngle / 2}deg)`,
                     left: '50%',
-                    background: 'rgba(0, 0, 0, 0.5)',
-                    borderRadius: '999px',
-                    padding: '2px 6px',
-                    minWidth: '25px',
-                    textAlign: 'center',
                   }}>
                   <span className="wheel-number">{entry}</span>
                 </div>
