@@ -39,29 +39,33 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       // Get the normalized final position (0-360 degrees)
       const normalizedRotation = newRotation % 360;
       
-      // FIXED CALCULATION - The key insight:
-      // 1. The wheel pointer is at 0 degrees (top)
-      // 2. The wheel rotates clockwise, moving segments past the pointer
-      // 3. We need to determine which segment is at the top (0 degrees) after rotation
+      // Calculate the winner based on the final position
+      // The pointer is at the top (0 degrees)
+      // When the wheel rotates clockwise, we need to determine 
+      // which segment is at the top position (pointer)
       
-      // First, calculate which segment is at the top position after rotation
-      // Since wheel rotates clockwise, we need the opposite direction from the rotation angle
-      let winningSegmentIndex = Math.floor(normalizedRotation / segmentAngle);
+      // This is the critical fix:
+      // Since the wheel rotates clockwise, we need to match the segments correctly
+      // The segment index is directly determined by how far the wheel has rotated
+      const winningSegmentIndex = Math.floor(normalizedRotation / segmentAngle);
       
-      // Since the segments are drawn in clockwise order, we need to invert the index
-      // to account for the clockwise rotation of the wheel
-      winningSegmentIndex = entries.length - 1 - winningSegmentIndex;
+      // Map this to the correct entry
+      // We need to adjust the index because the wheel rotation is clockwise
+      // but the segments are numbered in clockwise order as well
+      const adjustedIndex = entries.length - 1 - winningSegmentIndex;
       
       // Ensure the index wraps around properly
-      winningSegmentIndex = (winningSegmentIndex + entries.length) % entries.length;
+      const finalIndex = (adjustedIndex + entries.length) % entries.length;
       
       // Get the winner from the entries array
-      const actualWinner = entries[winningSegmentIndex];
+      const actualWinner = entries[finalIndex];
       
       console.log({
         normalizedRotation,
         segmentAngle,
         winningSegmentIndex,
+        adjustedIndex,
+        finalIndex,
         actualWinner,
         entriesLength: entries.length,
         entriesArray: entries
