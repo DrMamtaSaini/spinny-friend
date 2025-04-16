@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { getSegmentColor } from "@/utils/wheelUtils";
@@ -25,16 +26,24 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     }
 
     setTimeout(() => {
+      // Calculate the final angle (normalized to 0-360 range)
       const finalAngle = newRotation % 360;
       const totalSegments = entries.length;
       const degreesPerSegment = 360 / totalSegments;
       
-      const segmentIndex = Math.floor((360 - finalAngle) / degreesPerSegment) % totalSegments;
+      // Calculate which segment is at the top (pointer position)
+      // The wheel rotates clockwise, so we need to find which segment is at the top
+      // We subtract from 360 because the wheel rotates clockwise, but our segments are indexed counterclockwise
+      // Then we add 180 because the pointer is at the top, and we need to find which segment is there
+      // This calculation ensures correct segment selection regardless of rotation direction
+      const adjustedAngle = (360 - finalAngle + 180) % 360;
+      const segmentIndex = Math.floor(adjustedAngle / degreesPerSegment);
       const validIndex = ((segmentIndex % totalSegments) + totalSegments) % totalSegments;
       const actualWinner = entries[validIndex];
       
       console.log({
         finalAngle,
+        adjustedAngle,
         degreesPerSegment,
         segmentIndex,
         validIndex,
