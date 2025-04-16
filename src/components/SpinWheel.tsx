@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { getSegmentColor } from "@/utils/wheelUtils";
@@ -30,23 +31,25 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       const totalSegments = entries.length;
       const degreesPerSegment = 360 / totalSegments;
       
-      // Calculate which segment is at the top (pointer position)
-      // For the wheel to display the correct winner, we need to:
-      // 1. First find where the wheel stops (finalAngle)
-      // 2. The wheel segments are drawn starting from the top and go clockwise
-      // 3. When the wheel spins clockwise, we need to determine which segment
-      //    ends up at the pointer (which is at the top of the wheel)
-      // 4. The segments are drawn such that segment 0 starts at the top
-      const winnerIndex = Math.floor(finalAngle / degreesPerSegment);
-      // We need to calculate the opposite segment that's now at the top
-      const actualWinnerIndex = (totalSegments - winnerIndex) % totalSegments;
+      // Fix the winner calculation logic:
+      // The wheel spins clockwise, and the pointer is fixed at the top (0 degrees)
+      // The segments are arranged clockwise starting from the top
+      // After the wheel stops, we need to figure out which segment is at the pointer
       
+      // When the wheel rotates clockwise by finalAngle degrees,
+      // we need to determine which segment lands at the top pointer (0 degrees)
+      const normalizedAngle = (360 - finalAngle) % 360;
+      const winnerIndex = Math.floor(normalizedAngle / degreesPerSegment);
+      
+      // Ensure index is within bounds by using modulo
+      const actualWinnerIndex = winnerIndex % totalSegments;
       const actualWinner = entries[actualWinnerIndex];
       
       console.log({
         finalAngle,
+        normalizedAngle,
         degreesPerSegment,
-        rawWinnerIndex: winnerIndex,
+        winnerIndex,
         actualWinnerIndex,
         actualWinner,
         entriesLength: entries.length
