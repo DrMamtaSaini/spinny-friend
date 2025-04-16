@@ -2,6 +2,7 @@
 import React from 'react';
 import { Github, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   Sheet,
   SheetContent,
@@ -32,9 +33,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 </SheetHeader>
                 <div className="py-4">
                   <nav className="flex flex-col gap-2">
-                    <a href="#" className="px-4 py-2 hover:bg-secondary rounded-md">Home</a>
-                    <a href="#" className="px-4 py-2 hover:bg-secondary rounded-md">About</a>
-                    <a href="#" className="px-4 py-2 hover:bg-secondary rounded-md">Support</a>
+                    <Link to="/" className="px-4 py-2 hover:bg-secondary rounded-md">Home</Link>
+                    <Link to="/about" className="px-4 py-2 hover:bg-secondary rounded-md">About</Link>
+                    <Link to="/support" className="px-4 py-2 hover:bg-secondary rounded-md">Support</Link>
                   </nav>
                 </div>
               </SheetContent>
@@ -48,9 +49,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           </div>
           
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#" className="text-sm font-medium hover:text-primary/80">Home</a>
-            <a href="#" className="text-sm font-medium hover:text-primary/80">About</a>
-            <a href="#" className="text-sm font-medium hover:text-primary/80">Support</a>
+            <Link to="/" className="text-sm font-medium hover:text-primary/80">Home</Link>
+            <Link to="/about" className="text-sm font-medium hover:text-primary/80">About</Link>
+            <Link to="/support" className="text-sm font-medium hover:text-primary/80">Support</Link>
           </nav>
           
           <div>
@@ -80,18 +81,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           </p>
           
           <div className="flex items-center gap-4">
-            <a 
-              href="#" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Terms
-            </a>
-            <a 
-              href="#" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Privacy
-            </a>
+            <Link to="/terms" className="text-sm font-medium text-muted-foreground hover:text-foreground">Terms</Link>
+            <Link to="/privacy" className="text-sm font-medium text-muted-foreground hover:text-foreground">Privacy</Link>
           </div>
         </div>
       </footer>
