@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import AdSpace from '@/components/AdSpace';
@@ -46,7 +45,7 @@ const About: React.FC = () => {
           <h2 className="text-2xl font-semibold mt-8 mb-4">Contact Us</h2>
           <p>
             We'd love to hear your feedback or answer any questions you might have about SpinnyFriend. 
-            Feel free to reach out to us at <a href="mailto:contact@spinnyfriend.app" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">contact@spinnyfriend.app</a>.
+            Feel free to reach out to us at <a href="mailto:drsainimamta@gmail.com" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">drsainimamta@gmail.com</a>.
           </p>
         </div>
       </div>
