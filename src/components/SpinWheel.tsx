@@ -30,30 +30,30 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       const totalSegments = entries.length;
       const degreesPerSegment = 360 / totalSegments;
       
-      // Corrected winner calculation logic:
-      // Since wheel rotates clockwise, we need to figure out which segment
-      // ends up at the top pointer (0 degrees) after spinning
+      // Simplified winner calculation logic:
+      // For a spinning wheel with a fixed pointer, the segment that ends up at the
+      // pointer position is our winner. Since we're rotating the wheel clockwise,
+      // we need to determine which segment aligns with the top pointer (0 degrees)
       
-      // Step 1: Convert the final angle to a position on the wheel (which segment is at the top)
-      // We need to invert the angle because the wheel spins clockwise
-      const normalizedAngle = (360 - finalAngle) % 360;
+      // Step 1: Convert the final rotation angle to a position on the wheel
+      const segmentPosition = (360 - finalAngle) % 360;
       
-      // Step 2: Calculate which segment lands at the pointer
-      const winnerIndex = Math.floor(normalizedAngle / degreesPerSegment);
+      // Step 2: Calculate which segment is at the pointer
+      const segmentIndex = Math.floor(segmentPosition / degreesPerSegment);
       
-      // Step 3: Ensure the index is within bounds
-      const safeWinnerIndex = (winnerIndex >= 0 && winnerIndex < entries.length) ? 
-        winnerIndex : winnerIndex % entries.length;
+      // Step 3: Make sure the index is within bounds
+      // When segmentIndex is negative or exceeds the number of entries
+      const normalizedIndex = ((segmentIndex % totalSegments) + totalSegments) % totalSegments;
       
-      // Step 4: Get the actual winner
-      const winner = entries[safeWinnerIndex];
+      // Step 4: Get the winning entry
+      const winner = entries[normalizedIndex];
       
       console.log({
         finalAngle,
-        normalizedAngle,
+        segmentPosition,
         degreesPerSegment,
-        winnerIndex,
-        safeWinnerIndex,
+        segmentIndex,
+        normalizedIndex,
         winner,
         entriesLength: entries.length
       });
@@ -62,7 +62,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       setIsSpinning(false);
       showConfetti();
       
-      if (onSpin) {
+      if (onSpin && winner) {
         onSpin(winner);
       }
     }, 5000);
