@@ -5,10 +5,13 @@ import SpinWheel from '@/components/SpinWheel';
 import WheelSettings from '@/components/WheelSettings';
 import { getDefaultRouletteNumbers, validateEntriesLimit } from '@/utils/wheelUtils';
 import AdSpace from '@/components/AdSpace';
+import { Eye, EyeOff } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Index: React.FC = () => {
   const [entries, setEntries] = useState<string[]>(getDefaultRouletteNumbers());
   const [winners, setWinners] = useState<string[]>([]);
+  const [showSettings, setShowSettings] = useState<boolean>(true);
 
   const handleWinner = (winner: string) => {
     setWinners(prev => [winner, ...prev]);
@@ -21,6 +24,10 @@ const Index: React.FC = () => {
     } else {
       setEntries(validateEntriesLimit(newEntries));
     }
+  };
+
+  const toggleSettings = () => {
+    setShowSettings(prev => !prev);
   };
 
   return (
@@ -37,16 +44,39 @@ const Index: React.FC = () => {
         </p>
       </div>
 
+      <div className="flex justify-end mb-4">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={toggleSettings}
+          className="flex items-center gap-2"
+        >
+          {showSettings ? (
+            <>
+              <EyeOff className="h-4 w-4" />
+              <span>Hide Settings</span>
+            </>
+          ) : (
+            <>
+              <Eye className="h-4 w-4" />
+              <span>Show Settings</span>
+            </>
+          )}
+        </Button>
+      </div>
+
       <div className="flex flex-col md:flex-row gap-8 items-start justify-center">
-        <div className="order-2 md:order-1">
-          <WheelSettings 
-            entries={entries} 
-            setEntries={handleSetEntries} 
-            winners={winners} 
-          />
-        </div>
+        {showSettings && (
+          <div className="order-2 md:order-1 transition-all duration-300 animate-fade-in">
+            <WheelSettings 
+              entries={entries} 
+              setEntries={handleSetEntries} 
+              winners={winners} 
+            />
+          </div>
+        )}
         
-        <div className="order-1 md:order-2 flex flex-col items-center gap-4">
+        <div className={`order-1 md:order-2 flex flex-col items-center gap-4 transition-all duration-300 ${!showSettings ? "w-full" : ""}`}>
           <SpinWheel 
             entries={entries} 
             onSpin={handleWinner} 

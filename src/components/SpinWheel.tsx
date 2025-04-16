@@ -17,29 +17,19 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     
     setIsSpinning(true);
     
-    // Calculate a random spin (at least 5 full rotations + random position)
     const spinAngle = 5 * 360 + Math.floor(Math.random() * 360);
     const newRotation = rotation + spinAngle;
     
-    // Update CSS variable for animation
     if (wheelRef.current) {
       wheelRef.current.style.setProperty('--spin-wheel-angle', `${spinAngle}deg`);
     }
 
-    // Determine the winner based on where the wheel stops
     setTimeout(() => {
-      // STEP 1: Calculate the final angle - normalized between 0-359 degrees
       const finalAngle = newRotation % 360;
-      
-      // STEP 2: Map angle to segment index
       const totalSegments = entries.length;
       const degreesPerSegment = 360 / totalSegments;
       
-      // Using the formula: Math.floor((360 - finalAngle) / degreesPerSegment) % totalSegments
-      // This maps the final wheel position to the correct segment index
       const segmentIndex = Math.floor((360 - finalAngle) / degreesPerSegment) % totalSegments;
-      
-      // Ensure the index is valid - add safety check
       const validIndex = ((segmentIndex % totalSegments) + totalSegments) % totalSegments;
       const actualWinner = entries[validIndex];
       
@@ -59,7 +49,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       if (onSpin) {
         onSpin(actualWinner);
       }
-    }, 5000); // Match this with the CSS animation duration
+    }, 5000);
   };
   
   const renderWheelSegments = () => {
@@ -97,8 +87,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     const segmentAngle = 360 / totalEntries;
     const rotation = index * segmentAngle;
     
-    // Calculate position for labels - placing them at mid-radius for better visibility
-    const labelDistance = 40; // percentage from center
+    const labelDistance = 40;
     const labelAngle = rotation + segmentAngle / 2;
     const labelRadians = (labelAngle * Math.PI) / 180;
     const labelX = 50 + labelDistance * Math.cos(labelRadians);
@@ -131,7 +120,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     
     container.innerHTML = '';
     
-    // Create confetti pieces with more vibrant colors
     const colors = ['#ea384c', '#66bb6a', '#1EAEDB', '#8B5CF6', '#F97316', '#D946EF', '#FFEB3B', '#00BCD4'];
     
     for (let i = 0; i < 150; i++) {
@@ -190,16 +178,14 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
   }, []);
 
   return (
-    <div className="relative flex flex-col items-center">
+    <div className="relative flex flex-col items-center w-full">
       <div id="confetti-container" className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden" />
       
-      {/* Wheel Container with thick white border */}
-      <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+      <div className="relative w-72 h-72 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] xl:w-[600px] xl:h-[600px]">
         <div 
           className="w-full h-full rounded-full border-[12px] border-white relative bg-white shadow-xl"
           style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.2)' }}
         >
-          {/* Wheel */}
           <div 
             ref={wheelRef}
             className={`w-full h-full relative rounded-full overflow-hidden ${isSpinning ? 'animate-spin-wheel' : ''}`}
@@ -210,17 +196,16 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
           >
             {renderWheelSegments()}
             
-            {/* Center SPIN button */}
             <div 
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10
-                        w-24 h-24 rounded-full bg-purple-600 flex items-center justify-center cursor-pointer"
+                        w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full bg-purple-600 flex items-center justify-center cursor-pointer
+                        hover:bg-purple-700 transition-colors"
               onClick={spinWheel}
             >
-              <span className="text-white font-bold text-2xl">SPIN</span>
+              <span className="text-white font-bold text-lg md:text-2xl">SPIN</span>
             </div>
           </div>
           
-          {/* Triangle Pointer - Pointing Downwards */}
           <div 
             className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10"
             style={{
