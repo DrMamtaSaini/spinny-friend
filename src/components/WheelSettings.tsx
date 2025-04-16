@@ -23,6 +23,13 @@ import {
   Heart
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { 
+  Accordion, 
+  AccordionContent, 
+  AccordionItem, 
+  AccordionTrigger 
+} from "@/components/ui/accordion";
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface WheelSettingsProps {
   entries: string[];
@@ -34,6 +41,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
   const [minNumber, setMinNumber] = React.useState('0');
   const [maxNumber, setMaxNumber] = React.useState('36');
   const [activeTab, setActiveTab] = React.useState('entries');
+  const isMobile = useIsMobile();
 
   const handleAddEntry = (entry: string) => {
     setEntries(prev => [...prev, entry]);
@@ -243,54 +251,113 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
             <div className="rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 p-4">
               <h3 className="font-bold text-lg text-purple-800 mb-3">How To Use</h3>
               
-              <div className="space-y-3">
-                <div className="bg-white bg-opacity-70 p-3 rounded-md flex items-start">
-                  <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">1</div>
-                  <div>
-                    <h4 className="font-semibold text-purple-700">Set Up Your Wheel</h4>
-                    <p className="text-sm text-gray-700">
+              {isMobile ? (
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="step-1" className="border-b">
+                    <AccordionTrigger className="py-2">
+                      <span className="flex items-center">
+                        <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">1</span>
+                        <span className="font-semibold text-purple-700">Set Up Your Wheel</span>
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-gray-700 pl-9">
                       Choose between numbers (0-49) or names in the Entries tab. For numbers, you can 
                       generate a range by setting min/max values, or add them individually. 
                       For custom entries, type each name and press Enter or click "Add".
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="bg-white bg-opacity-70 p-3 rounded-md flex items-start">
-                  <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">2</div>
-                  <div>
-                    <h4 className="font-semibold text-purple-700">Customize Your Experience</h4>
-                    <p className="text-sm text-gray-700">
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="step-2" className="border-b">
+                    <AccordionTrigger className="py-2">
+                      <span className="flex items-center">
+                        <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">2</span>
+                        <span className="font-semibold text-purple-700">Customize Your Experience</span>
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-gray-700 pl-9">
                       Edit entries by clicking the pencil icon, or remove items by clicking the trash icon. 
                       You can add up to 50 entries for optimal visibility. The wheel will automatically 
                       adjust its segments to match your entries.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="bg-white bg-opacity-70 p-3 rounded-md flex items-start">
-                  <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">3</div>
-                  <div>
-                    <h4 className="font-semibold text-purple-700">Spin The Wheel</h4>
-                    <p className="text-sm text-gray-700">
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="step-3" className="border-b">
+                    <AccordionTrigger className="py-2">
+                      <span className="flex items-center">
+                        <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">3</span>
+                        <span className="font-semibold text-purple-700">Spin The Wheel</span>
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-gray-700 pl-9">
                       Click the SPIN button to start the wheel. Watch as it rotates and gradually slows down 
                       to reveal your randomly selected winner. The pointer at the top indicates the winning segment.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="bg-white bg-opacity-70 p-3 rounded-md flex items-start">
-                  <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">4</div>
-                  <div>
-                    <h4 className="font-semibold text-purple-700">Track Results</h4>
-                    <p className="text-sm text-gray-700">
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="step-4">
+                    <AccordionTrigger className="py-2">
+                      <span className="flex items-center">
+                        <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 flex-shrink-0">4</span>
+                        <span className="font-semibold text-purple-700">Track Results</span>
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-gray-700 pl-9">
                       All winning results are stored in the Winner History section under Settings. 
                       The most recent winners appear at the top of the list. You can refer back to this 
                       history at any time during your session.
-                    </p>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ) : (
+                <div className="space-y-3">
+                  <div className="bg-white bg-opacity-70 p-3 rounded-md flex items-start">
+                    <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">1</div>
+                    <div>
+                      <h4 className="font-semibold text-purple-700">Set Up Your Wheel</h4>
+                      <p className="text-sm text-gray-700">
+                        Choose between numbers (0-49) or names in the Entries tab. For numbers, you can 
+                        generate a range by setting min/max values, or add them individually. 
+                        For custom entries, type each name and press Enter or click "Add".
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white bg-opacity-70 p-3 rounded-md flex items-start">
+                    <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">2</div>
+                    <div>
+                      <h4 className="font-semibold text-purple-700">Customize Your Experience</h4>
+                      <p className="text-sm text-gray-700">
+                        Edit entries by clicking the pencil icon, or remove items by clicking the trash icon. 
+                        You can add up to 50 entries for optimal visibility. The wheel will automatically 
+                        adjust its segments to match your entries.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white bg-opacity-70 p-3 rounded-md flex items-start">
+                    <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">3</div>
+                    <div>
+                      <h4 className="font-semibold text-purple-700">Spin The Wheel</h4>
+                      <p className="text-sm text-gray-700">
+                        Click the SPIN button to start the wheel. Watch as it rotates and gradually slows down 
+                        to reveal your randomly selected winner. The pointer at the top indicates the winning segment.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white bg-opacity-70 p-3 rounded-md flex items-start">
+                    <div className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">4</div>
+                    <div>
+                      <h4 className="font-semibold text-purple-700">Track Results</h4>
+                      <p className="text-sm text-gray-700">
+                        All winning results are stored in the Winner History section under Settings. 
+                        The most recent winners appear at the top of the list. You can refer back to this 
+                        history at any time during your session.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
             
             <div className="rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
@@ -299,89 +366,97 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
                 Frequently Asked Questions
               </h3>
               
-              <div className="space-y-2">
-                <details className="bg-white bg-opacity-70 p-3 rounded-md">
-                  <summary className="font-medium text-blue-700 cursor-pointer flex items-center">
-                    <RotateCw className="h-4 w-4 mr-2" />
-                    Is the wheel spin truly random?
-                  </summary>
-                  <p className="text-sm mt-2 text-gray-700 pl-6">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="faq-1">
+                  <AccordionTrigger className="text-blue-700 font-medium">
+                    <span className="flex items-center">
+                      <RotateCw className="h-4 w-4 mr-2" />
+                      Is the wheel spin truly random?
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-gray-700 pl-6">
                     Yes, Spinny Saga uses a cryptographically secure random number generator to ensure 
                     completely fair and unbiased results with each spin. Every entry has an equal chance of winning.
-                  </p>
-                </details>
+                  </AccordionContent>
+                </AccordionItem>
                 
-                <details className="bg-white bg-opacity-70 p-3 rounded-md">
-                  <summary className="font-medium text-blue-700 cursor-pointer flex items-center">
-                    <Smartphone className="h-4 w-4 mr-2" />
-                    Can I use this on my mobile device?
-                  </summary>
-                  <p className="text-sm mt-2 text-gray-700 pl-6">
+                <AccordionItem value="faq-2">
+                  <AccordionTrigger className="text-blue-700 font-medium">
+                    <span className="flex items-center">
+                      <Smartphone className="h-4 w-4 mr-2" />
+                      Can I use this on my mobile device?
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-gray-700 pl-6">
                     Absolutely! Spinny Saga is fully responsive and works on all modern devices including smartphones 
                     and tablets. The interface automatically adjusts to provide the best experience regardless of screen size.
-                  </p>
-                </details>
+                  </AccordionContent>
+                </AccordionItem>
                 
-                <details className="bg-white bg-opacity-70 p-3 rounded-md">
-                  <summary className="font-medium text-blue-700 cursor-pointer flex items-center">
-                    <Save className="h-4 w-4 mr-2" />
-                    Can I save my wheel configuration?
-                  </summary>
-                  <p className="text-sm mt-2 text-gray-700 pl-6">
+                <AccordionItem value="faq-3">
+                  <AccordionTrigger className="text-blue-700 font-medium">
+                    <span className="flex items-center">
+                      <Save className="h-4 w-4 mr-2" />
+                      Can I save my wheel configuration?
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-gray-700 pl-6">
                     Currently, wheel configurations are saved in your browser's local storage during your session. 
                     In future updates, we plan to add the ability to create an account to save and share your custom wheels.
-                  </p>
-                </details>
+                  </AccordionContent>
+                </AccordionItem>
                 
-                <details className="bg-white bg-opacity-70 p-3 rounded-md">
-                  <summary className="font-medium text-blue-700 cursor-pointer flex items-center">
-                    <Check className="h-4 w-4 mr-2" />
-                    What is the maximum number of entries?
-                  </summary>
-                  <p className="text-sm mt-2 text-gray-700 pl-6">
+                <AccordionItem value="faq-4">
+                  <AccordionTrigger className="text-blue-700 font-medium">
+                    <span className="flex items-center">
+                      <Check className="h-4 w-4 mr-2" />
+                      What is the maximum number of entries?
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-gray-700 pl-6">
                     You can add up to 50 entries to your wheel. This limit ensures that each segment remains 
                     visible and readable. For numbers, you can use any value from 0 to 49.
-                  </p>
-                </details>
-              </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
           </div>
         </TabsContent>
         
         <TabsContent value="about" className="space-y-4 animate-in fade-in">
           <div className="rounded-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 text-white text-center">
-              <h3 className="font-bold text-2xl">Spinny Saga</h3>
-              <p className="text-sm opacity-90">The Ultimate Wheel of Fortune Experience</p>
+            <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 sm:p-6 text-white text-center">
+              <h3 className="font-bold text-xl sm:text-2xl">Spinny Saga</h3>
+              <p className="text-xs sm:text-sm opacity-90">The Ultimate Wheel of Fortune Experience</p>
             </div>
             
-            <div className="p-4 space-y-4 bg-gradient-to-b from-purple-50 to-white">
-              <div className="bg-white p-4 rounded-md shadow-sm">
-                <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
-                  <Heart className="h-5 w-5 mr-2 text-pink-500" />
+            <div className="p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gradient-to-b from-purple-50 to-white">
+              <div className="bg-white p-3 sm:p-4 rounded-md shadow-sm">
+                <h4 className="font-semibold text-purple-800 mb-2 flex items-center text-sm sm:text-base">
+                  <Heart className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-pink-500" />
                   Our Story
                 </h4>
-                <p className="text-sm text-gray-700">
+                <p className="text-xs sm:text-sm text-gray-700">
                   Spinny Saga was born from a simple idea: making random selection fun and engaging. Whether you're 
                   deciding who goes first in a game night, picking winners for a giveaway, or just having fun with friends, 
                   we wanted to create an experience that brings joy to decision-making.
                 </p>
-                <p className="text-sm text-gray-700 mt-2">
+                <p className="text-xs sm:text-sm text-gray-700 mt-2">
                   Our team of developers and designers worked together to create this interactive wheel spinner that combines 
                   functionality with visual appeal. We launched in 2025 and have been helping people make random decisions with style ever since.
                 </p>
               </div>
               
-              <div className="bg-white p-4 rounded-md shadow-sm">
-                <h4 className="font-semibold text-purple-800 mb-2 flex items-center">
-                  <BookOpen className="h-5 w-5 mr-2 text-purple-500" />
+              <div className="bg-white p-3 sm:p-4 rounded-md shadow-sm">
+                <h4 className="font-semibold text-purple-800 mb-2 flex items-center text-sm sm:text-base">
+                  <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-purple-500" />
                   Our Mission
                 </h4>
-                <p className="text-sm text-gray-700">
+                <p className="text-xs sm:text-sm text-gray-700">
                   Our mission is to transform ordinary decision-making into moments of anticipation and excitement. We believe that 
                   even the simplest choices can be made memorable with the right tools. Spinny Saga is designed to be:
                 </p>
-                <ul className="mt-2 space-y-1 text-sm text-gray-700 list-disc pl-5">
+                <ul className="mt-2 space-y-1 text-xs sm:text-sm text-gray-700 list-disc pl-5">
                   <li>Intuitive and easy to use for everyone</li>
                   <li>Completely fair and truly random in its selections</li>
                   <li>Visually engaging with smooth animations</li>
@@ -390,35 +465,35 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
                 </ul>
               </div>
               
-              <div className="bg-white p-4 rounded-md shadow-sm">
-                <h4 className="font-semibold text-purple-800 mb-2">Platform Compatibility</h4>
-                <p className="text-sm text-gray-700">
+              <div className="bg-white p-3 sm:p-4 rounded-md shadow-sm">
+                <h4 className="font-semibold text-purple-800 mb-2 text-sm sm:text-base">Platform Compatibility</h4>
+                <p className="text-xs sm:text-sm text-gray-700">
                   Spinny Saga is a web application that works on all modern browsers. It's fully responsive and optimized for:
                 </p>
-                <ul className="mt-2 space-y-1 text-sm text-gray-700 list-disc pl-5">
+                <ul className="mt-2 space-y-1 text-xs sm:text-sm text-gray-700 list-disc pl-5">
                   <li><strong>Desktop computers</strong> - Windows, Mac, and Linux</li>
                   <li><strong>Mobile devices</strong> - iOS and Android smartphones and tablets</li>
                   <li><strong>Tablets</strong> - iPad, Android tablets, and other tablet devices</li>
                 </ul>
-                <p className="text-sm text-gray-700 mt-2">
+                <p className="text-xs sm:text-sm text-gray-700 mt-2">
                   While currently available as a web app, we're exploring options to release native mobile apps for both Android and iOS in the future. 
                   Stay tuned for updates!
                 </p>
               </div>
               
-              <div className="bg-white p-4 rounded-md shadow-sm">
-                <h4 className="font-semibold text-purple-800 mb-2">Contact Us</h4>
-                <p className="text-sm text-gray-700">
+              <div className="bg-white p-3 sm:p-4 rounded-md shadow-sm">
+                <h4 className="font-semibold text-purple-800 mb-2 text-sm sm:text-base">Contact Us</h4>
+                <p className="text-xs sm:text-sm text-gray-700">
                   Have suggestions, feedback, or just want to say hello? We'd love to hear from you! 
                   Reach out to us at <span className="text-purple-600">hello@spinnysaga.com</span>
                 </p>
-                <p className="text-sm text-gray-700 mt-2">
+                <p className="text-xs sm:text-sm text-gray-700 mt-2">
                   Follow us on social media for updates and tips:
                 </p>
-                <div className="mt-2 flex gap-4 justify-center">
-                  <Badge variant="outline" className="bg-blue-50">Twitter</Badge>
-                  <Badge variant="outline" className="bg-purple-50">Instagram</Badge>
-                  <Badge variant="outline" className="bg-red-50">YouTube</Badge>
+                <div className="mt-2 flex flex-wrap gap-2 justify-center">
+                  <Badge variant="outline" className="bg-blue-50 text-xs">Twitter</Badge>
+                  <Badge variant="outline" className="bg-purple-50 text-xs">Instagram</Badge>
+                  <Badge variant="outline" className="bg-red-50 text-xs">YouTube</Badge>
                 </div>
               </div>
             </div>
