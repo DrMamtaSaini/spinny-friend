@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useToast } from "@/components/ui/use-toast";
 import { getSegmentColor } from "@/utils/wheelUtils";
 
 interface SpinWheelProps {
@@ -11,16 +10,13 @@ interface SpinWheelProps {
 
 const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [winner, setWinner] = useState<string | null>(null);
   const [rotation, setRotation] = useState(0);
   const wheelRef = useRef<HTMLDivElement>(null);
-  const { toast: uiToast } = useToast();
   
   const spinWheel = () => {
     if (isSpinning || entries.length === 0) return;
     
     setIsSpinning(true);
-    setWinner(null);
     
     // Calculate a random spin (at least 5 full rotations + random position)
     const spinAngle = 5 * 360 + Math.floor(Math.random() * 360);
@@ -58,7 +54,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       });
       
       setRotation(newRotation);
-      setWinner(actualWinner);
       setIsSpinning(false);
       showConfetti();
       
@@ -252,12 +247,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       >
         {isSpinning ? "Spinning..." : "SPIN"}
       </Button>
-      
-      {winner && !isSpinning && (
-        <div className="mt-4 bg-purple-600 text-white p-3 px-6 rounded-full shadow-lg animate-fade-in">
-          <p className="text-lg font-bold">Winner: {winner}</p>
-        </div>
-      )}
     </div>
   );
 };
