@@ -33,27 +33,24 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
 
     // Determine the winner based on where the wheel stops
     setTimeout(() => {
-      // The segmentAngle is the angle taken by each segment
-      const segmentAngle = 360 / entries.length;
+      // STEP 1: Calculate the final angle
+      const finalAngle = newRotation % 360;
       
-      // Get normalized rotation between 0-359 degrees
-      const normalizedRotation = newRotation % 360;
+      // STEP 2: Map angle to segment index using the exact formula provided
+      const totalSegments = entries.length;
+      const degreesPerSegment = 360 / totalSegments;
       
-      // Calculate the winning index using the provided formula:
-      // winning_index = floor((360 - (A % 360)) / segmentAngle) % entries.length
-      const adjustedAngle = 360 - normalizedRotation;
-      const winningIndex = Math.floor(adjustedAngle / segmentAngle) % entries.length;
+      // Using the provided formula: Math.floor((360 - finalAngle) / degreesPerSegment) % totalSegments
+      const segmentIndex = Math.floor((360 - finalAngle) / degreesPerSegment) % totalSegments;
       
-      const actualWinner = entries[winningIndex];
+      const actualWinner = entries[segmentIndex];
       
       console.log({
-        normalizedRotation,
-        adjustedAngle,
-        segmentAngle,
-        winningIndex,
+        finalAngle,
+        degreesPerSegment,
+        segmentIndex,
         actualWinner,
-        entriesLength: entries.length,
-        entries: entries
+        entriesLength: entries.length
       });
       
       setRotation(newRotation);
