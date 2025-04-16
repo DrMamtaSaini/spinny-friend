@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { getSegmentColor } from "@/utils/wheelUtils";
@@ -221,15 +220,17 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
             </div>
           </div>
           
-          {/* Triangle Pointer - Longer and More Precise */}
+          {/* Triangle Pointer - Pointing Downwards */}
           <div 
-            className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+            className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10"
             style={{
               width: '20px',
-              height: '50px', // Made longer
+              height: '50px', 
               backgroundColor: '#FF4081',
-              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)', // Keep original triangle shape
-              filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.5))', // Enhanced shadow
+              clipPath: 'polygon(50% 100%, 0% 0%, 100% 0%)',
+              filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.5))',
+              position: 'absolute', 
+              top: '-25px',
             }}
           />
         </div>
