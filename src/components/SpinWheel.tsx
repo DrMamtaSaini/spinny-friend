@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { getSegmentColor } from "@/utils/wheelUtils";
@@ -32,21 +31,23 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       const degreesPerSegment = 360 / totalSegments;
       
       // Calculate which segment is at the top (pointer position)
-      // The wheel rotates clockwise, so we need to find which segment is at the top
-      // We subtract from 360 because the wheel rotates clockwise, but our segments are indexed counterclockwise
-      // Then we add 180 because the pointer is at the top, and we need to find which segment is there
-      // This calculation ensures correct segment selection regardless of rotation direction
-      const adjustedAngle = (360 - finalAngle + 180) % 360;
-      const segmentIndex = Math.floor(adjustedAngle / degreesPerSegment);
-      const validIndex = ((segmentIndex % totalSegments) + totalSegments) % totalSegments;
-      const actualWinner = entries[validIndex];
+      // For the wheel to display the correct winner, we need to:
+      // 1. First find where the wheel stops (finalAngle)
+      // 2. The wheel segments are drawn starting from the top and go clockwise
+      // 3. When the wheel spins clockwise, we need to determine which segment
+      //    ends up at the pointer (which is at the top of the wheel)
+      // 4. The segments are drawn such that segment 0 starts at the top
+      const winnerIndex = Math.floor(finalAngle / degreesPerSegment);
+      // We need to calculate the opposite segment that's now at the top
+      const actualWinnerIndex = (totalSegments - winnerIndex) % totalSegments;
+      
+      const actualWinner = entries[actualWinnerIndex];
       
       console.log({
         finalAngle,
-        adjustedAngle,
         degreesPerSegment,
-        segmentIndex,
-        validIndex,
+        rawWinnerIndex: winnerIndex,
+        actualWinnerIndex,
         actualWinner,
         entriesLength: entries.length
       });
