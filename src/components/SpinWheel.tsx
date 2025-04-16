@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { getSegmentColor } from "@/utils/wheelUtils";
 
 interface SpinWheelProps {
@@ -60,10 +59,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       if (onSpin) {
         onSpin(actualWinner);
       }
-      
-      toast.success(`Winner: ${actualWinner}`, {
-        description: 'Congratulations!',
-      });
     }, 5000); // Match this with the CSS animation duration
   };
   
