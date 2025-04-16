@@ -33,22 +33,26 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
 
     // Determine the winner based on where the wheel stops
     setTimeout(() => {
-      // STEP 1: Calculate the final angle
+      // STEP 1: Calculate the final angle - normalized between 0-359 degrees
       const finalAngle = newRotation % 360;
       
-      // STEP 2: Map angle to segment index using the exact formula provided
+      // STEP 2: Map angle to segment index
       const totalSegments = entries.length;
       const degreesPerSegment = 360 / totalSegments;
       
-      // Using the provided formula: Math.floor((360 - finalAngle) / degreesPerSegment) % totalSegments
+      // Using the formula: Math.floor((360 - finalAngle) / degreesPerSegment) % totalSegments
+      // This maps the final wheel position to the correct segment index
       const segmentIndex = Math.floor((360 - finalAngle) / degreesPerSegment) % totalSegments;
       
-      const actualWinner = entries[segmentIndex];
+      // Ensure the index is valid - add safety check
+      const validIndex = ((segmentIndex % totalSegments) + totalSegments) % totalSegments;
+      const actualWinner = entries[validIndex];
       
       console.log({
         finalAngle,
         degreesPerSegment,
         segmentIndex,
+        validIndex,
         actualWinner,
         entriesLength: entries.length
       });
@@ -226,14 +230,15 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
             </div>
           </div>
           
-          {/* Triangle Pointer */}
+          {/* Triangle Pointer - Made more visible */}
           <div 
             className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
             style={{
-              width: '24px',
-              height: '24px',
-              backgroundColor: 'black',
+              width: '30px',
+              height: '30px',
+              backgroundColor: '#FF4081',
               clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+              filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))',
             }}
           />
         </div>
