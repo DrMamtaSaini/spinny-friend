@@ -34,6 +34,19 @@ export const getSegmentColor = (index: number): string => {
  * @returns Array of numbers in the range
  */
 export const generateNumberRange = (start: number, end: number): string[] => {
+  // Ensure we don't exceed the limit of 100 entries
+  start = Math.max(0, Math.min(99, start));
+  end = Math.max(0, Math.min(99, end));
+  
+  if (end < start) {
+    [start, end] = [end, start]; // Swap if end is less than start
+  }
+  
+  // Limit to 100 entries
+  if (end - start + 1 > 100) {
+    end = start + 99; // Limit to 100 entries
+  }
+  
   const range: string[] = [];
   for (let i = start; i <= end; i++) {
     range.push(i.toString());
@@ -64,8 +77,20 @@ export const getDefaultRouletteNumbers = (): string[] => {
  * @returns Array of valid entries
  */
 export const parseEntriesFromText = (text: string): string[] => {
-  return text
+  const entries = text
     .split('\n')
     .map(entry => entry.trim())
     .filter(isValidEntry);
+  
+  // Limit to 100 entries
+  return entries.slice(0, 100);
+};
+
+/**
+ * Validates the number of entries to ensure it doesn't exceed the limit
+ * @param entries Array of entries to validate
+ * @returns Array limited to 100 entries
+ */
+export const validateEntriesLimit = (entries: string[]): string[] => {
+  return entries.slice(0, 100);
 };
