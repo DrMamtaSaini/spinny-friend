@@ -1,9 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import SpinWheel from '@/components/SpinWheel';
 import WheelSettings from '@/components/WheelSettings';
 import { getDefaultRouletteNumbers, validateEntriesLimit } from '@/utils/wheelUtils';
+import AdSpace from '@/components/AdSpace';
 
 const Index: React.FC = () => {
   const [entries, setEntries] = useState<string[]>(getDefaultRouletteNumbers());
@@ -13,7 +14,7 @@ const Index: React.FC = () => {
     setWinners(prev => [winner, ...prev]);
   };
 
-  // Ensure we don't exceed the limit of 100 entries
+  // Ensure we don't exceed the limit of 50 entries
   const handleSetEntries = (newEntries: string[] | ((prev: string[]) => string[])) => {
     if (typeof newEntries === 'function') {
       setEntries((prev) => validateEntriesLimit(newEntries(prev)));
@@ -24,6 +25,9 @@ const Index: React.FC = () => {
 
   return (
     <MainLayout>
+      {/* Top AdMob Space */}
+      <AdSpace className="w-full h-16 mb-4" />
+      
       <div className="text-center mb-8">
         <h1 className="text-5xl font-extrabold tracking-tight lg:text-6xl mb-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
           Spinny Saga
@@ -49,6 +53,12 @@ const Index: React.FC = () => {
           />
         </div>
       </div>
+      
+      {/* Middle AdMob Space */}
+      <AdSpace className="w-full h-16 my-6" />
+      
+      {/* Bottom AdMob Space */}
+      <AdSpace className="w-full h-16 mt-4" />
     </MainLayout>
   );
 };

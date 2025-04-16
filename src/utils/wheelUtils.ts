@@ -34,17 +34,17 @@ export const getSegmentColor = (index: number): string => {
  * @returns Array of numbers in the range
  */
 export const generateNumberRange = (start: number, end: number): string[] => {
-  // Ensure we don't exceed the limit of 100 entries
-  start = Math.max(0, Math.min(99, start));
-  end = Math.max(0, Math.min(99, end));
+  // Ensure we don't exceed the limit of 50 entries (0-49)
+  start = Math.max(0, Math.min(49, start));
+  end = Math.max(0, Math.min(49, end));
   
   if (end < start) {
     [start, end] = [end, start]; // Swap if end is less than start
   }
   
-  // Limit to 100 entries
-  if (end - start + 1 > 100) {
-    end = start + 99; // Limit to 100 entries
+  // Limit to 50 entries
+  if (end - start + 1 > 50) {
+    end = start + 49; // Limit to 50 entries
   }
   
   const range: string[] = [];
@@ -82,15 +82,15 @@ export const parseEntriesFromText = (text: string): string[] => {
     .map(entry => entry.trim())
     .filter(isValidEntry);
   
-  // Limit to 100 entries
-  return entries.slice(0, 100);
+  // Limit to 50 entries
+  return entries.slice(0, 50);
 };
 
 /**
  * Validates the number of entries to ensure it doesn't exceed the limit
  * @param entries Array of entries to validate
- * @returns Array limited to 100 entries
+ * @returns Array limited to 50 entries
  */
 export const validateEntriesLimit = (entries: string[]): string[] => {
-  return entries.slice(0, 100);
+  return entries.slice(0, 50);
 };

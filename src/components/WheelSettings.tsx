@@ -29,6 +29,7 @@ interface WheelSettingsProps {
 const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winners }) => {
   const [minNumber, setMinNumber] = React.useState('0');
   const [maxNumber, setMaxNumber] = React.useState('36');
+  const [activeTab, setActiveTab] = React.useState('entries');
 
   const handleAddEntry = (entry: string) => {
     setEntries(prev => [...prev, entry]);
@@ -54,7 +55,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
     const min = parseInt(minNumber) || 0;
     const max = parseInt(maxNumber) || 36;
     
-    if (min > max || max > 99) {
+    if (min > max || max > 49) {
       return; // Could show an error toast here
     }
     
@@ -73,7 +74,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
         <p className="text-xs opacity-80">Customize your spin wheel experience</p>
       </div>
       
-      <Tabs defaultValue="entries" className="p-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="p-4">
         <TabsList className="grid grid-cols-4 mb-4">
           <TabsTrigger value="entries" className="flex items-center gap-1">
             <List className="h-4 w-4" />
@@ -102,7 +103,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
             
             <TabsContent value="number" className="space-y-4">
               <div className="p-3 bg-purple-50 border border-purple-100 rounded-md">
-                <p className="text-sm text-purple-700 mb-2">Generate numbers from 0 to 99</p>
+                <p className="text-sm text-purple-700 mb-2">Generate numbers from 0 to 49</p>
                 <div className="flex gap-3 items-end">
                   <div className="flex-1">
                     <Label htmlFor="min-number" className="text-sm">Min</Label>
@@ -112,7 +113,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
                       value={minNumber}
                       onChange={(e) => setMinNumber(e.target.value)}
                       min="0"
-                      max="99"
+                      max="49"
                       className="border-purple-200 focus-visible:ring-purple-400"
                     />
                   </div>
@@ -124,7 +125,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
                       value={maxNumber}
                       onChange={(e) => setMaxNumber(e.target.value)}
                       min="0"
-                      max="99"
+                      max="49"
                       className="border-purple-200 focus-visible:ring-purple-400"
                     />
                   </div>
@@ -162,7 +163,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
             <TabsContent value="name" className="space-y-4">
               <div className="p-3 bg-pink-50 border border-pink-100 rounded-md">
                 <p className="text-sm text-pink-700">
-                  Add names or custom text entries (up to 100 entries)
+                  Add names or custom text entries (up to 50 entries)
                 </p>
               </div>
               
@@ -233,7 +234,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
           </div>
         </TabsContent>
         
-        <TabsContent value="how-to" className="space-y-4">
+        <TabsContent value="how-to" className="space-y-4 animate-in fade-in">
           <div className="space-y-4">
             <div className="rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 p-4">
               <h3 className="font-bold text-lg text-purple-800 mb-3">How To Use</h3>
@@ -242,7 +243,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
                 <div className="bg-white bg-opacity-70 p-3 rounded-md">
                   <h4 className="font-semibold text-purple-700">1. Set Up Your Wheel</h4>
                   <p className="text-sm text-gray-700">
-                    Add numbers (0-99) or names to the wheel using the Entries tab. 
+                    Add numbers (0-49) or names to the wheel using the Entries tab. 
                     You can generate a range of numbers or add custom entries.
                   </p>
                 </div>
@@ -284,7 +285,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
                     Is there a limit to how many entries I can add?
                   </summary>
                   <p className="text-sm mt-2 text-gray-700">
-                    You can add up to 100 entries (numbers from 0-99 or custom names). 
+                    You can add up to 50 entries (numbers from 0-49 or custom names). 
                     Adding too many entries may make the wheel segments smaller and harder to read.
                   </p>
                 </details>
@@ -303,7 +304,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
           </div>
         </TabsContent>
         
-        <TabsContent value="about" className="space-y-4">
+        <TabsContent value="about" className="space-y-4 animate-in fade-in">
           <div className="rounded-lg overflow-hidden">
             <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 text-white text-center">
               <h3 className="font-bold text-2xl">Spinny Saga</h3>
