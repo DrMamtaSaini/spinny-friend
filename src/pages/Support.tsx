@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import AdSpace from '@/components/AdSpace';
@@ -78,7 +77,7 @@ const Support: React.FC = () => {
           <AccordionItem value="item-5">
             <AccordionTrigger className="text-lg font-medium">How do I report bugs or suggest features?</AccordionTrigger>
             <AccordionContent>
-              <p>Please email us at <a href="mailto:support@spinnyfriend.app" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">support@spinnyfriend.app</a> with any issues or suggestions. We appreciate your feedback!</p>
+              <p>Please email us at <a href="mailto:drsainimamta@gmail.com" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">drsainimamta@gmail.com</a> with any issues or suggestions. We appreciate your feedback!</p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -86,7 +85,7 @@ const Support: React.FC = () => {
         <div className="bg-muted p-6 rounded-lg">
           <h3 className="text-xl font-semibold mb-2">Need More Help?</h3>
           <p className="mb-4">If you have any questions or need further assistance, please don't hesitate to contact our support team.</p>
-          <p>Email: <a href="mailto:support@spinnyfriend.app" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">support@spinnyfriend.app</a></p>
+          <p>Email: <a href="mailto:drsainimamta@gmail.com" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">drsainimamta@gmail.com</a></p>
         </div>
       </div>
       
