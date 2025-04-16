@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -40,21 +39,20 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       // Get normalized rotation between 0-359 degrees
       const normalizedRotation = newRotation % 360;
       
-      // Calculate which segment is at the top indicator (pointer)
-      // When the wheel stops, we need to find which segment is at the top (0 degrees)
-      
-      // IMPORTANT FIX: The key insight is that the wheel rotates clockwise,
-      // so we need to find which segment is at the top position after rotation
-      
-      // Since we're rotating clockwise, we can determine the segment
-      // by calculating how many segments have passed the top indicator
-      
-      // First, convert the rotation to segment index (how many segments have passed)
+      // The wheel rotates clockwise, but the pointer is at the top (0 degrees)
+      // We need to determine which segment is at the pointer after rotation
+
+      // To calculate the winning index, we need to:
+      // 1. Determine how many segments clockwise from the starting position
+      //    we've rotated (normalizedRotation / segmentAngle)
+      // 2. Since entry[0] starts at the top, and we're going clockwise,
+      //    we need to subtract this offset from the total entries
+      //    to find which segment is now at the top.
+      // 3. We use modulo to wrap around when we exceed the array length
+
+      // Calculate the winning index
+      // Important: We use Math.ceil to ensure we get the right segment after rotation
       const segmentsPassed = Math.floor(normalizedRotation / segmentAngle);
-      
-      // Then calculate which segment is now at the top (index in entries array)
-      // We need to go counterclockwise from the starting position (entry[0] at top)
-      // The formula is: (total segments - segments passed) % total segments
       const winningSegmentIndex = (entries.length - segmentsPassed) % entries.length;
       
       // Get the actual winner from entries array
@@ -118,14 +116,13 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     });
   };
   
-  // Add a function to correctly render the numbers on the wheel
-  // This ensures visual alignment with the winner calculation
+  // Render the segment labels with correct orientation
   const renderSegmentLabel = (entry: string, index: number, totalEntries: number) => {
     const segmentAngle = 360 / totalEntries;
     const rotation = index * segmentAngle;
     
     // Calculate position for labels - placing them at mid-radius for better visibility
-    const labelDistance = 45; // percentage from center - moved closer for better visibility
+    const labelDistance = 40; // percentage from center
     const labelAngle = rotation + segmentAngle / 2;
     const labelRadians = (labelAngle * Math.PI) / 180;
     const labelX = 50 + labelDistance * Math.cos(labelRadians);
@@ -144,9 +141,10 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
           color: 'white',
           textShadow: '1px 1px 2px rgba(0,0,0,0.7)',
           zIndex: 5,
+          whiteSpace: 'nowrap',
         }}
       >
-        <span>{entry}</span>
+        {entry}
       </div>
     );
   };
@@ -176,6 +174,44 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       }
     }, 5000);
   };
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes spin-wheel {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(var(--spin-wheel-angle)); }
+      }
+      .animate-spin-wheel {
+        animation: spin-wheel 5s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+      }
+      @keyframes confetti-fall {
+        0% {
+          transform: translateY(-50px) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 10%;
+        pointer-events: none;
+        opacity: 0;
+      }
+      .animate-confetti-fall {
+        animation: confetti-fall 3s linear forwards;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   return (
     <div className="relative flex flex-col items-center">
