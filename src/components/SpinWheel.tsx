@@ -39,30 +39,20 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       // Get normalized rotation between 0-359 degrees
       const normalizedRotation = newRotation % 360;
       
-      // FIXED: The key insight is that after spinning, the segment that is aligned
-      // with the pointer (at top, 0 degrees) is the winner
-      
-      // Since the wheel is organized clockwise starting with the first entry at the top,
-      // and we rotate clockwise, we need to calculate which segment is now at the top
-      
-      // Math.floor(normalizedRotation / segmentAngle) tells us how many segments we've moved past
-      const segmentsPassed = Math.floor(normalizedRotation / segmentAngle);
-      
-      // Since entries[0] starts at the top, we need to find which entry is now at the top
-      // after rotating clockwise by segmentsPassed segments
-      // This formula gives us the correct winner based on the visual result:
-      const winningIndex = (entries.length - segmentsPassed) % entries.length;
+      // Calculate the winning index using the provided formula:
+      // winning_index = floor((360 - (A % 360)) / segmentAngle) % entries.length
+      const adjustedAngle = 360 - normalizedRotation;
+      const winningIndex = Math.floor(adjustedAngle / segmentAngle) % entries.length;
       
       const actualWinner = entries[winningIndex];
       
       console.log({
         normalizedRotation,
+        adjustedAngle,
         segmentAngle,
-        segmentsPassed,
         winningIndex,
         actualWinner,
         entriesLength: entries.length,
-        // Log full entries array for debugging
         entries: entries
       });
       
@@ -81,7 +71,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     }, 5000); // Match this with the CSS animation duration
   };
   
-  // Render wheel segments and labels
   const renderWheelSegments = () => {
     if (entries.length === 0) {
       return (
@@ -113,7 +102,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
     });
   };
   
-  // Render the segment labels with correct orientation
   const renderSegmentLabel = (entry: string, index: number, totalEntries: number) => {
     const segmentAngle = 360 / totalEntries;
     const rotation = index * segmentAngle;
