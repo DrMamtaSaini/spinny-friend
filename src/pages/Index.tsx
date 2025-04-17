@@ -32,10 +32,10 @@ const Index: React.FC = () => {
       
       <div className="text-center mb-8">
         <h1 className="text-5xl font-extrabold tracking-tight lg:text-6xl mb-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
-          Spinny Saga
+          Spinny Wheel
         </h1>
         <p className="text-lg text-muted-foreground">
-          Customize your wheel and spin for a random winner.
+          Customize your wheel and spin for a random selection.
         </p>
       </div>
 
