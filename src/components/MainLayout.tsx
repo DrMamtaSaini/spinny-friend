@@ -29,7 +29,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               </SheetTrigger>
               <SheetContent side="left">
                 <SheetHeader>
-                  <SheetTitle>SpinnyFriend</SheetTitle>
+                  <SheetTitle>Spinny Wheel</SheetTitle>
                 </SheetHeader>
                 <div className="py-4">
                   <nav className="flex flex-col gap-2">
@@ -43,7 +43,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             
             <div className="flex items-center gap-2">
               <span className="text-xl font-bold bg-gradient-to-r from-wheel-red via-wheel-blue to-wheel-purple bg-clip-text text-transparent">
-                SpinnyFriend
+                Spinny Wheel
               </span>
             </div>
           </div>
