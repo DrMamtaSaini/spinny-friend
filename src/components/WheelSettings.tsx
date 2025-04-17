@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,9 @@ import {
   Smartphone,
   RotateCw,
   Check,
-  Heart
+  Heart,
+  EyeOff,
+  Eye
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -35,9 +36,17 @@ interface WheelSettingsProps {
   entries: string[];
   setEntries: React.Dispatch<React.SetStateAction<string[]>>;
   winners: string[];
+  showWinnerHistory?: boolean;
+  toggleWinnerHistory?: () => void;
 }
 
-const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winners }) => {
+const WheelSettings: React.FC<WheelSettingsProps> = ({ 
+  entries, 
+  setEntries, 
+  winners,
+  showWinnerHistory = true,
+  toggleWinnerHistory
+}) => {
   const [minNumber, setMinNumber] = React.useState('0');
   const [maxNumber, setMaxNumber] = React.useState('36');
   const [activeTab, setActiveTab] = React.useState('entries');
@@ -210,12 +219,36 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({ entries, setEntries, winn
         
         <TabsContent value="settings" className="space-y-4">
           <div className="border p-4 rounded-md bg-gradient-to-br from-purple-50 to-pink-50">
-            <h3 className="font-semibold flex items-center text-lg mb-3 text-purple-800">
-              <History className="h-4 w-4 mr-2" />
-              Winner History
-            </h3>
-            {winners.length === 0 ? (
-              <p className="text-muted-foreground text-center py-2 bg-white bg-opacity-50 rounded-md">No winners yet</p>
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="font-semibold flex items-center text-lg text-purple-800">
+                <History className="h-4 w-4 mr-2" />
+                Winner History
+              </h3>
+              
+              {toggleWinnerHistory && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={toggleWinnerHistory}
+                  className="h-8 px-2"
+                >
+                  {showWinnerHistory ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </Button>
+              )}
+            </div>
+            
+            {!showWinnerHistory ? (
+              <p className="text-muted-foreground text-center py-2 bg-white bg-opacity-50 rounded-md">
+                Winner history is hidden
+              </p>
+            ) : winners.length === 0 ? (
+              <p className="text-muted-foreground text-center py-2 bg-white bg-opacity-50 rounded-md">
+                No winners yet
+              </p>
             ) : (
               <ul className="space-y-1 max-h-48 overflow-auto rounded-md bg-white bg-opacity-60 p-2">
                 {winners.map((winner, index) => (

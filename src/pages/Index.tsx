@@ -12,6 +12,7 @@ const Index: React.FC = () => {
   const [entries, setEntries] = useState<string[]>(getDefaultRouletteNumbers());
   const [winners, setWinners] = useState<string[]>([]);
   const [showSettings, setShowSettings] = useState<boolean>(true);
+  const [showWinnerHistory, setShowWinnerHistory] = useState<boolean>(false);
 
   const handleWinner = (winner: string) => {
     setWinners(prev => [winner, ...prev]);
@@ -71,7 +72,9 @@ const Index: React.FC = () => {
             <WheelSettings 
               entries={entries} 
               setEntries={handleSetEntries} 
-              winners={winners} 
+              winners={showWinnerHistory ? winners : []}
+              showWinnerHistory={showWinnerHistory}
+              toggleWinnerHistory={() => setShowWinnerHistory(prev => !prev)}
             />
           </div>
         )}
