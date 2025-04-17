@@ -467,7 +467,7 @@ const WheelSettings: React.FC<WheelSettingsProps> = ({
                 <h4 className="font-semibold text-purple-800 mb-2 text-sm sm:text-base">Contact Us</h4>
                 <p className="text-xs sm:text-sm text-gray-700">
                   Have suggestions, feedback, or just want to say hello? We'd love to hear from you! 
-                  Reach out to us at <span className="text-purple-600">hello@spinnysaga.com</span>
+                  Reach out to us at <span className="text-purple-600">drsainimamta@gmail.com</span>
                 </p>
                 <p className="text-xs sm:text-sm text-gray-700 mt-2">
                   Follow us on social media for updates and tips:
