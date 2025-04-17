@@ -1,16 +1,15 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { getSegmentColor } from "@/utils/wheelUtils";
 
 interface SpinWheelProps {
   entries: string[];
-  onSpin?: (winner: string) => void;
 }
 
-const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
+const SpinWheel: React.FC<SpinWheelProps> = ({ entries }) => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
-  const [lastWinner, setLastWinner] = useState<string | null>(null);
   const wheelRef = useRef<HTMLDivElement>(null);
   
   const spinWheel = () => {
@@ -31,12 +30,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       const totalSegments = entries.length;
       const degreesPerSegment = 360 / totalSegments;
       
-      // Complete rewrite of winner calculation:
-      // Since the wheel is rendered with segments in clockwise order starting from the top,
-      // and the wheel rotates clockwise, we need to determine which segment is at the pointer after rotation
-      
       // Convert final rotation to a segment index
-      // We need to normalize the angle to find which segment is at the top
       const segmentPosition = (360 - finalAngle) % 360;
       const segmentIndex = Math.floor(segmentPosition / degreesPerSegment);
       
@@ -59,13 +53,7 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       
       setRotation(newRotation);
       setIsSpinning(false);
-      setLastWinner(winner); // Store the winner locally for verification
       showConfetti();
-      
-      // Call the onSpin callback only if winner exists
-      if (onSpin && winner) {
-        onSpin(winner);
-      }
     }, 5000);
   };
   
@@ -247,12 +235,6 @@ const SpinWheel: React.FC<SpinWheelProps> = ({ entries, onSpin }) => {
       >
         {isSpinning ? "Spinning..." : "SPIN"}
       </Button>
-      
-      {lastWinner && (
-        <div className="mt-4 text-center p-2 bg-purple-100 rounded-md">
-          <p className="text-sm text-purple-700">Last Winner: <span className="font-bold">{lastWinner}</span></p>
-        </div>
-      )}
     </div>
   );
 };

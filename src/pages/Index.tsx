@@ -10,13 +10,7 @@ import { Button } from '@/components/ui/button';
 
 const Index: React.FC = () => {
   const [entries, setEntries] = useState<string[]>(getDefaultRouletteNumbers());
-  const [winners, setWinners] = useState<string[]>([]);
   const [showSettings, setShowSettings] = useState<boolean>(true);
-  const [showWinnerHistory, setShowWinnerHistory] = useState<boolean>(false);
-
-  const handleWinner = (winner: string) => {
-    setWinners(prev => [winner, ...prev]);
-  };
 
   // Ensure we don't exceed the limit of 50 entries
   const handleSetEntries = (newEntries: string[] | ((prev: string[]) => string[])) => {
@@ -72,9 +66,6 @@ const Index: React.FC = () => {
             <WheelSettings 
               entries={entries} 
               setEntries={handleSetEntries} 
-              winners={showWinnerHistory ? winners : []}
-              showWinnerHistory={showWinnerHistory}
-              toggleWinnerHistory={() => setShowWinnerHistory(prev => !prev)}
             />
           </div>
         )}
@@ -82,7 +73,6 @@ const Index: React.FC = () => {
         <div className={`order-1 md:order-2 flex flex-col items-center gap-4 transition-all duration-300 ${!showSettings ? "w-full" : ""}`}>
           <SpinWheel 
             entries={entries} 
-            onSpin={handleWinner} 
           />
         </div>
       </div>
