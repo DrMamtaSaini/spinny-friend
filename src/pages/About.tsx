@@ -11,7 +11,7 @@ const About: React.FC = () => {
       
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
-          About SpinnyFriend
+          SpinnyFriend
         </h1>
         
         <div className="prose prose-lg dark:prose-invert">
