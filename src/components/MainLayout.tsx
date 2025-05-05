@@ -36,6 +36,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                     <Link to="/" className="px-4 py-2 hover:bg-secondary rounded-md">Home</Link>
                     <Link to="/about" className="px-4 py-2 hover:bg-secondary rounded-md">About</Link>
                     <Link to="/support" className="px-4 py-2 hover:bg-secondary rounded-md">Support</Link>
+                    <Link to="/contact" className="px-4 py-2 hover:bg-secondary rounded-md">Contact</Link>
+                    <Link to="/privacy" className="px-4 py-2 hover:bg-secondary rounded-md">Privacy Policy</Link>
                   </nav>
                 </div>
               </SheetContent>
@@ -52,6 +54,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             <Link to="/" className="text-sm font-medium hover:text-primary/80">Home</Link>
             <Link to="/about" className="text-sm font-medium hover:text-primary/80">About</Link>
             <Link to="/support" className="text-sm font-medium hover:text-primary/80">Support</Link>
+            <Link to="/contact" className="text-sm font-medium hover:text-primary/80">Contact</Link>
           </nav>
           
           <div>
@@ -77,12 +80,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <footer className="border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
           <p className="text-sm text-muted-foreground text-center md:text-left">
-            &copy; {new Date().getFullYear()} SpinnyFriend. All rights reserved.
+            &copy; {new Date().getFullYear()} Spinny Wheel. All rights reserved.
           </p>
           
           <div className="flex items-center gap-4">
             <Link to="/terms" className="text-sm font-medium text-muted-foreground hover:text-foreground">Terms</Link>
             <Link to="/privacy" className="text-sm font-medium text-muted-foreground hover:text-foreground">Privacy</Link>
+            <Link to="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">Contact</Link>
           </div>
         </div>
       </footer>
