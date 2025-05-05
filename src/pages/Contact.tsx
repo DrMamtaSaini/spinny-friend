@@ -1,6 +1,7 @@
 
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
+import AdSpace from '@/components/AdSpace';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,6 +14,9 @@ const Contact: React.FC = () => {
         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
           Contact Us
         </h1>
+        
+        {/* Top AdSpace */}
+        <AdSpace className="mb-8" />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
           <div>
@@ -91,6 +95,9 @@ const Contact: React.FC = () => {
           ></iframe>
         </div>
       </div>
+      
+      {/* Bottom AdSpace - sticky */}
+      <AdSpace isSticky className="mt-8" />
     </MainLayout>
   );
 };

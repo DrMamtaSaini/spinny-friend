@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import SpinWheel from '@/components/SpinWheel';
 import WheelSettings from '@/components/WheelSettings';
+import AdSpace from '@/components/AdSpace';
 import { getDefaultRouletteNumbers, validateEntriesLimit } from '@/utils/wheelUtils';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -34,6 +35,9 @@ const Index: React.FC = () => {
           Customize your wheel and spin for a random selection.
         </p>
       </div>
+
+      {/* Top AdSpace - non-sticky */}
+      <AdSpace className="mb-8" />
 
       <div className="flex justify-end mb-4">
         <Button 
@@ -72,6 +76,9 @@ const Index: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* Bottom AdSpace - sticky */}
+      <AdSpace isSticky adUnit="8272741641" className="mt-8" />
     </MainLayout>
   );
 };
