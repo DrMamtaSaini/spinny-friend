@@ -9,12 +9,21 @@ declare global {
   }
 }
 
+// AdSense constants
+const ADSENSE_CLIENT_ID = 'ca-pub-7673358241410118';
+const DEFAULT_AD_UNIT = '1936216391';
+
 interface AdSpaceProps extends React.HTMLAttributes<HTMLDivElement> {
-  adUnit: string;
+  adUnit?: string;
   isSticky?: boolean;
 }
 
-const AdSpace: React.FC<AdSpaceProps> = ({ className, adUnit, isSticky, ...props }) => {
+const AdSpace: React.FC<AdSpaceProps> = ({ 
+  className, 
+  adUnit = DEFAULT_AD_UNIT, 
+  isSticky, 
+  ...props 
+}) => {
   useEffect(() => {
     // Initialize ad after component mounts
     try {
@@ -39,7 +48,7 @@ const AdSpace: React.FC<AdSpaceProps> = ({ className, adUnit, isSticky, ...props
       <ins
         className="adsbygoogle"
         style={{ display: 'block', minHeight: '90px' }}
-        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_CLIENT}
+        data-ad-client={ADSENSE_CLIENT_ID}
         data-ad-slot={adUnit}
         data-ad-format="auto"
         data-full-width-responsive="true"
