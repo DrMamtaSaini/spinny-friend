@@ -4,7 +4,6 @@ import MainLayout from '@/components/MainLayout';
 import SpinWheel from '@/components/SpinWheel';
 import WheelSettings from '@/components/WheelSettings';
 import { getDefaultRouletteNumbers, validateEntriesLimit } from '@/utils/wheelUtils';
-import AdSpace from '@/components/AdSpace';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -27,9 +26,6 @@ const Index: React.FC = () => {
 
   return (
     <MainLayout>
-      {/* Top AdMob Space */}
-      <AdSpace className="w-full h-16 mb-4" />
-      
       <div className="text-center mb-8">
         <h1 className="text-5xl font-extrabold tracking-tight lg:text-6xl mb-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
           Spinny Wheel
@@ -76,12 +72,6 @@ const Index: React.FC = () => {
           />
         </div>
       </div>
-      
-      {/* Middle AdMob Space */}
-      <AdSpace className="w-full h-16 my-6" />
-      
-      {/* Bottom AdMob Space */}
-      <AdSpace className="w-full h-16 mt-4" />
     </MainLayout>
   );
 };

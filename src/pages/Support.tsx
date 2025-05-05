@@ -1,22 +1,19 @@
+
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
-import AdSpace from '@/components/AdSpace';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const Support: React.FC = () => {
   return (
     <MainLayout>
-      {/* Top AdMob Space */}
-      <AdSpace className="w-full h-16 mb-4" />
-      
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
-          How to Use SpinnyFriend
+          How to Use Spinny Wheel
         </h1>
         
         <div className="mb-8">
           <p className="text-lg mb-6">
-            SpinnyFriend is designed to be intuitive and easy to use. Here's a quick guide to help you get started:
+            Spinny Wheel is designed to be intuitive and easy to use. Here's a quick guide to help you get started:
           </p>
           
           <div className="space-y-6">
@@ -46,9 +43,9 @@ const Support: React.FC = () => {
         
         <Accordion type="single" collapsible className="mb-8">
           <AccordionItem value="item-1">
-            <AccordionTrigger className="text-lg font-medium">Is SpinnyFriend available as a mobile app?</AccordionTrigger>
+            <AccordionTrigger className="text-lg font-medium">Is Spinny Wheel available as a mobile app?</AccordionTrigger>
             <AccordionContent>
-              <p>Currently, SpinnyFriend is available as a responsive web application that works well on mobile browsers. 
+              <p>Currently, Spinny Wheel is available as a responsive web application that works well on mobile browsers. 
               We're working on native Android and iOS apps for the future.</p>
             </AccordionContent>
           </AccordionItem>
@@ -63,7 +60,7 @@ const Support: React.FC = () => {
           <AccordionItem value="item-3">
             <AccordionTrigger className="text-lg font-medium">Is the wheel selection truly random?</AccordionTrigger>
             <AccordionContent>
-              <p>Yes, SpinnyFriend uses a cryptographically secure random number generator to ensure fair and unbiased selections.</p>
+              <p>Yes, Spinny Wheel uses a cryptographically secure random number generator to ensure fair and unbiased selections.</p>
             </AccordionContent>
           </AccordionItem>
           
@@ -88,9 +85,6 @@ const Support: React.FC = () => {
           <p>Email: <a href="mailto:drsainimamta@gmail.com" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">drsainimamta@gmail.com</a></p>
         </div>
       </div>
-      
-      {/* Bottom AdMob Space */}
-      <AdSpace className="w-full h-16 mt-8" />
     </MainLayout>
   );
 };
